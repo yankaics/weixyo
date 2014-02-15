@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>注册临时版</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="description" content="">
+		<style type="text/css">
+			*,html{margin: 0;padding: 0;font-family: '微软雅黑';}
+			header{width: 100%;height: 50px;line-height: 50px;background: #9BD0FB;text-align: center;}
+			header span{font-size: 20px;color: #666;}
+			.content{background: rgb(245, 244, 239);text-align: center;}
+			input{width:60%;height: 30px;padding-left: 10px;}
+		</style>
+	</head>
+	<body>
+		<header>
+			<span id="name">注册</span>
+		</header>
+		<div class="content">
+			<br>
+			<input type="text" id="username" placeholder="用户名">
+			
+			<input type="password" id="password" placeholder="密码" style="margin:20px 0;">
+
+			<input type="button" id="submit" value="确定" style="width:40%;">
+		</div>
+
+		<script src="../template/default/feed/js/jquery.min.js"></script>
+		<script type="text/javascript">
+		 $("#submit").click(function () {
+		  $.ajax({
+                 type: "POST",
+                 url: "wx.php?do=deal",
+                 data: "username="+$('#username').val()+"&password="+$('#password').val()+"&register=1",//提交表单，相当于CheckCorpID.ashx?ID=XXX
+                  async: true,                    
+                    success: function (data) {
+                      if(data=='-1'){
+                      	alert("账号名称太短");
+                      }else if(data=='-3'){
+                      	alert("账号已存在");
+                      }else if(data=='1'){
+                      	$('#name').html("创建成功，可使用该账号登陆网页端");
+                      	$('.content').hide();
+                      }
+                        
+                      
+                    }
+                  })
+              }); 
+		 </script>
+	</body>
+</html>

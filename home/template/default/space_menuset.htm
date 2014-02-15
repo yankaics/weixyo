@@ -1,0 +1,88 @@
+<!--{template header}-->
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">Grid Layout</a> </div>
+  </div>
+  <div class="container-fluid">
+
+        <!--{if $list}-->
+      <!--{loop $list $value}-->
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-list"></i> </span>
+            <h5>$value[name]</h5><span <!--{if $value[cheak]}-->class="label label-important"<!--{else}-->class="label"<!--{/if}--> style="float:right;"><!--{if $value[cheak]}-->已订阅<!--{else}-->未订阅<!--{/if}--></span>
+            <input type="hidden" id="class" value='$value[id]'>
+          </div>
+          <div class="widget-content">$value[message]</div>
+        </div>
+      </div>
+    </div>
+      <!--{/loop}-->
+      <!--{else}-->
+      <p style="text-align:center;">没有组件可选</p>
+      <!--{/if}-->
+  </div>
+</div>
+<input type="hidden" id="uid" value='$value[id]'>
+<!--Footer-part-->
+<!--{template footer}-->
+<!--end-Footer-part-->
+<script src="./template/default/feed/js/jquery.min.js"></script> 
+<script src="./template/default/feed/js/jquery.ui.custom.js"></script> 
+<script src="./template/default/feed/js/bootstrap.min.js"></script> 
+<script src="./template/default/feed/js/matrix.js"></script>
+   <script type="text/javascript">
+        $(document).ready(function(){
+
+            $(".label").click(function(){
+             
+                   $(this).toggleClass("label-important");
+                if($(this).hasClass("label-important")){
+                        var id=$(this).parent().parent().find("#class").val();
+                        $(this).parent().find(".label").html("已订阅");
+                         $.ajax({
+                         type: "POST",
+                         url: "space.php?do=deal",
+                         data: "id="+id+"&menuset=1",//提交表单，相当于CheckCorpID.ashx?ID=XXX
+                          async: true,                    
+                            success: function (data) {}
+                        })
+                  }else{
+                         var id=$(this).parent().parent().find("#class").val();
+                         $(this).parent().find(".label").html("未订阅");
+                          $.ajax({
+                               type: "POST",
+                               url: "space.php?do=deal",
+                               data: "id="+id+"&menuset=0",//提交表单，相当于CheckCorpID.ashx?ID=XXX
+                                async: true,                    
+                                  success: function (data) {}
+                              })
+                     
+                  }
+             
+                });
+            
+
+           /* $("#submit").click(function () {
+                 $.ajax({
+                 type: "POST",
+                 url: "wx.php?do=dial",
+                 data: "uid="+$('#uid').val()+"&viewuid="+$('#viewuid').val()+"&dialprice="+$('#dialprice').val()+"&diallevel="+$('#diallevel').val()+"&username="+$('#username').val()+"&dialid="+$('#dialid').val()+"&tel="+$('#tel').val()+"&dial=1",//提交表单，相当于CheckCorpID.ashx?ID=XXX
+                  async: true,                    
+                    success: function (data) {
+                      $(".t-button").hide();
+                      $(".expressInfo").fadeOut();
+                        alert("请等待工作人员确认，到时会以电话确认");
+                    }
+                })
+             })*/
+       
+
+           
+           
+            });
+            
+    </script>
+</body>
+</html>

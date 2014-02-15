@@ -1,0 +1,57 @@
+
+<!--{template header}-->
+<div id="content">
+<div style=" float:left;width:100px;"><input type="file" name="attach_" value="上传图片" class="button" id="fileinput_" >
+<div><img src="$value[pic]" id="optionimga_" style="display:none"/><a href="do.php?ac=ajax&picid=$value[picid]&op=deletepic" id="pic_delete_$value[picid]" onclick="ajaxmenu(event, this.id,1000); deletepic()">删除</a></div></div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script> 
+<script language="javascript" src="swfupload/jquery.uploadify-3.1.min.js"></script>
+<link href="swfupload/uploadify.css" rel="stylesheet" type="text/css">
+<script language="javascript">var jquery = jQuery.noConflict(); </script>
+<script>
+			jquery(document).ready(function() {
+			  
+				　　jquery('#fileinput_').uploadify({
+				 　　//以下参数均是可选
+				 　　'swf' : 'uploadify.swf', //指定上传控件的主体文件，默认'uploader.swf'
+				 　　'uploader' : 'cp.php?ac=upload', //指定服务器端上传处理文件，默认'upload.php教程'
+					'checkScript' : true,
+				 　　'cancelimg' : 'swfupload/uploadify-cancel.png', //指定取消上传的图片，默认'cancel.png'
+				 　　//'buttonimg':'swfupload/upload2.jpg',
+				 　　'auto' : true, //选定文件后是否自动上传，默认false
+				 　　//'folder' : '/userphoto' , //要上传到的服务器路径，默认'/'
+				 　　'multi' : false, //是否允许同时上传多文件，默认false
+				 　　'filedesc' : '图片文件' , //出现在上传对话框中的文件类型描述
+				 　　'fileext' : '*.jpg;*.bmp;*.png;*.gif', //控制可上传文件的扩展名，启用本项时需同时声明filedesc
+				 　　'sizelimit': 86400, //控制上传文件的大小，单位byte
+					'formData': { 'uploadsubmit2': 'true', 'albumid':'0', 'formhash':'<!--{eval echo formhash();}-->', 'index':'1', 'ac':'upload', 'uid' : '$_SGLOBAL[supe_uid]',"session":"<?php echo session_id()?>"},
+				 　　'onUploadSuccess': function(file, data, response) {
+				  　　	//jquery('#image').attr("src","<%=basepath%>userphoto/"+res ponse);
+				  　　	//jquery('#image').show();
+				  　　	//jquery('#photo').attr("value",response);
+						
+				  		data = eval("(" + data + ')');
+						
+						jquery("#optionimga_").attr("src",data.pic);
+						jquery("#optionimga_").show();
+						jquery("#pics_").val(data.picid);
+						var astr = '<a href="do.php?ac=ajax&picid='+data.picid+'&op=deletepic" id="pic_delete_'+data.picid+'" onclick="ajaxmenu(event, this.id,1000); deletepic()">删除</a>';
+						jquery("#optionimga_").parent().append(astr);
+						
+				 　　},
+				 	'onUploadComplete': function(file){
+						jquery('#fileinput_').hide();
+						
+					},
+					'onUploadError' : function(file, errorCode, errorMsg, errorString) {
+						alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
+					},
+					'fileObjName':'attach',
+				 　　'onUploadError' : function(file, errorCode, errorMsg, errorString){
+				 　　	alert("文件:" + file.name + " 上传失败");
+				 　　}
+				　　});
+　　});
+
+</script>
+</div>
+<!--{template footer}-->
